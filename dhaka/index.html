@@ -1,0 +1,746 @@
+<!--Bootstrap Starts-->
+<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="style.css">
+<link href="https://fonts.googleapis.com/css?family=Work+Sans" rel="stylesheet">
+<!--Bootstrap Ends-->
+
+<script type="text/javascript" src="jsonx.js"></script>
+
+<!-- START SIGMA IMPORTS -->
+<script src="../src/sigma.core.js"></script>
+<script src="../src/conrad.js"></script>
+<script src="../src/utils/sigma.utils.js"></script>
+<script src="../src/utils/sigma.polyfills.js"></script>
+<script src="../src/sigma.settings.js"></script>
+<script src="../src/classes/sigma.classes.dispatcher.js"></script>
+<script src="../src/classes/sigma.classes.configurable.js"></script>
+<script src="../src/classes/sigma.classes.graph.js"></script>
+<script src="../src/classes/sigma.classes.camera.js"></script>
+<script src="../src/classes/sigma.classes.quad.js"></script>
+<script src="../src/classes/sigma.classes.edgequad.js"></script>
+<script src="../src/captors/sigma.captors.mouse.js"></script>
+<script src="../src/captors/sigma.captors.touch.js"></script>
+<script src="../src/renderers/sigma.renderers.canvas.js"></script>
+<script src="../src/renderers/sigma.renderers.webgl.js"></script>
+<script src="../src/renderers/sigma.renderers.svg.js"></script>
+<script src="../src/renderers/sigma.renderers.def.js"></script>
+<script src="../src/renderers/webgl/sigma.webgl.nodes.def.js"></script>
+<script src="../src/renderers/webgl/sigma.webgl.nodes.fast.js"></script>
+<script src="../src/renderers/webgl/sigma.webgl.edges.def.js"></script>
+<script src="../src/renderers/webgl/sigma.webgl.edges.fast.js"></script>
+<script src="../src/renderers/webgl/sigma.webgl.edges.arrow.js"></script>
+<script src="../src/renderers/canvas/sigma.canvas.labels.def.js"></script>
+<script src="../src/renderers/canvas/sigma.canvas.hovers.def.js"></script>
+<script src="../src/renderers/canvas/sigma.canvas.nodes.def.js"></script>
+<script src="../src/renderers/canvas/sigma.canvas.edges.def.js"></script>
+<script src="../src/renderers/canvas/sigma.canvas.edges.curve.js"></script>
+<script src="../src/renderers/canvas/sigma.canvas.edges.arrow.js"></script>
+<script src="../src/renderers/canvas/sigma.canvas.edges.curvedArrow.js"></script>
+<script src="../src/renderers/canvas/sigma.canvas.edgehovers.def.js"></script>
+<script src="../src/renderers/canvas/sigma.canvas.edgehovers.curve.js"></script>
+<script src="../src/renderers/canvas/sigma.canvas.edgehovers.arrow.js"></script>
+<script src="../src/renderers/canvas/sigma.canvas.edgehovers.curvedArrow.js"></script>
+<script src="../src/renderers/canvas/sigma.canvas.extremities.def.js"></script>
+<script src="../src/renderers/svg/sigma.svg.utils.js"></script>
+<script src="../src/renderers/svg/sigma.svg.nodes.def.js"></script>
+<script src="../src/renderers/svg/sigma.svg.edges.def.js"></script>
+<script src="../src/renderers/svg/sigma.svg.edges.curve.js"></script>
+<script src="../src/renderers/svg/sigma.svg.labels.def.js"></script>
+<script src="../src/renderers/svg/sigma.svg.hovers.def.js"></script>
+<script src="../src/middlewares/sigma.middlewares.rescale.js"></script>
+<script src="../src/middlewares/sigma.middlewares.copy.js"></script>
+<script src="../src/misc/sigma.misc.animation.js"></script>
+<script src="../src/misc/sigma.misc.bindEvents.js"></script>
+<script src="../src/misc/sigma.misc.bindDOMEvents.js"></script>
+<script src="../src/misc/sigma.misc.drawHovers.js"></script>
+<!-- END SIGMA IMPORTS -->
+
+<script src="../plugins/sigma.renderers.edgeLabels/settings.js"></script>
+<script src="../plugins/sigma.renderers.edgeLabels/sigma.canvas.edges.labels.def.js"></script>
+<script src="../plugins/sigma.renderers.edgeLabels/sigma.canvas.edges.labels.curve.js"></script>
+<script src="../plugins/sigma.renderers.edgeLabels/sigma.canvas.edges.labels.curvedArrow.js"></script>
+<script src="../plugins/sigma.plugins.dragNodes/sigma.plugins.dragNodes.js"></script>
+<script src="../plugins/sigma.renderers.parallelEdges/utils.js"></script>
+<script src="../plugins/sigma.renderers.parallelEdges/sigma.canvas.edges.curve.js"></script>
+<script src="../plugins/sigma.renderers.parallelEdges/sigma.canvas.edges.curvedArrow.js"></script>
+<script src="../plugins/sigma.renderers.parallelEdges/sigma.canvas.edgehovers.curve.js"></script>
+<script src="../plugins/sigma.renderers.parallelEdges/sigma.canvas.edgehovers.curvedArrow.js"></script>
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+<!--Include all compiled plugins-->
+<script src="bootstrap/js/bootstrap.min.js"></script>
+
+<div id="container">
+  <style>
+    body{
+      margin: 0;
+    }
+
+    #title
+    {
+      padding: 5px;
+      margin: 2px;
+    }
+
+    #graph-container {
+      top: 0%;
+      bottom: 0;
+      left: 0px;
+      right: 0px;
+      position: absolute;
+      background: #fff; 
+    }
+    #container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 100%;
+      background: inherit;
+    }
+        .UI{
+            height: 90% !important;
+            width: 20%;
+            background: #00c5e2;
+            position: relative;
+            margin-left: 2%;
+            margin-right: 5%;
+            margin-bottom: 2%;
+            margin-top: 2%;
+            border-radius: 1em;
+            box-shadow: 0px 5px 30px #999999;
+          }
+
+          .UI2{
+            height: 90% !important;
+            width: 20%;
+            background: #00c5e2;
+            position: relative;
+            margin-left: 22%;
+            margin-right: 5%;
+            margin-bottom: 2%;
+            margin-top: 2%;
+            border-radius: 1em;
+            box-shadow: 0px 5px 30px #999999;
+            display: none;
+          }
+        .make-it-slow {
+          box-shadow: 0 1px 2px rgba(0,0,0,0.15);
+          transition: box-shadow 0.3s ease-in-out;
+        }
+
+        .make-it-slow:hover {
+          box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .input_form{
+
+        }
+        .pic{
+          position: relative;
+          width: 30%;
+        }
+        .style-4{
+          padding: 10px;
+          border: none;
+          border-bottom: solid 2px #c9c9c9;
+          transition: border 0.3s;
+          border-radius: 0.6em;
+          font-family: 'Work Sans', sans-serif;
+
+        }
+        .style-4:focus,
+        .style-4.focus {
+          border-bottom: solid 2px #969696;
+        }
+        .input_one{
+          width: 70%;
+          height: 7% !important;
+          text-align: center;
+          vertical-align: middle;
+          margin-top: 12%;
+          margin-left: 14%;
+          text-decoration-color: #aaaca9;
+          font-family: 'Work Sans', sans-serif;
+        }
+        .input_two{
+          width: 70%;
+          height: 7% !important;
+          text-align: center;
+          vertical-align: middle;
+          margin-top: 7%;
+          margin-left: 14%;
+          font-family: 'Work Sans', sans-serif;
+        }
+        ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+          color: #d4d5d3;
+        }
+        ::-moz-placeholder { /* Firefox 19+ */
+          color: #d4d5d3;
+        }
+        .back_button{
+          width: 60%;
+          margin-top: 28%;
+          opacity: inherit;
+        }
+        .calculate{
+          background: #00305e;
+          border: 0;
+          color: white;
+          text-align: center;
+          text-align-last: center;
+          vertical-align: middle; 
+          font-family: 'Work Sans', sans-serif;
+        }
+
+        #ham{
+          position: relative;
+          margin-top: 2%;
+          margin-left: 2%;
+        }
+
+        #qham{
+          width: 3%;
+          display: none;
+        }
+
+        .bus_icon{
+          width: 11%;
+          text-align: center;
+          margin-left: 42%;
+          margin-top: 10%;  
+        }
+
+        .rec_button{
+          border-radius: 0.4em;
+          width: 70%;
+          height: 5%;
+          background: inherit;
+          margin-left: 14%;
+          margin-top: 6%;
+          border: 2px solid #00305e;
+          color: #00305e; 
+          text-align: center;
+          vertical-align: middle; 
+          font-family: 'Work Sans', sans-serif;
+          -webkit-transition-duration: 0.4s; /* Safari */
+          transition-duration: 0.4s;
+        }
+
+        .rec_button:hover{
+          background-color: #00305e;
+          color: white;
+        }
+
+        .faq_icon{
+          width: 13%;
+          text-align: center;
+          margin-left: 42%;
+          margin-top: 12%;  
+        }
+        .social{
+            margin-top: 12%;
+            width: 50%;
+            text-align: center;
+            vertical-align: middle;
+            margin-left: 23.5%;
+        }
+
+        .table{
+
+            display: block; 
+            height: 100%;
+            
+        }
+
+        .logo{
+          width: 60%;
+          text-align: right;
+          margin-top: 3%;
+          margin-left: 10%;
+        }
+
+  </style>
+
+<!--  <div class="row"> -->
+
+  <div id="container">
+      
+    <div id="graph-container">
+          <!--Everything is going on here-->
+    </div>
+
+      <div id="UI2" class="UI2"> 
+        
+        <div>
+          <h3 id="title"></h3>
+          <table class="table">
+            
+            <tr id="bus_parent">
+              <th> Buses Available </th>
+            </tr>
+            <!--Change needed-->
+
+          </table>
+
+        </div>
+
+      </div>
+
+    <div id="ham">
+      <img id="qham" src="images/qham.png">
+    </div>
+
+  </div>
+
+    <!-- Container for UI -->
+    <div id="UI" class="UI">
+    <div class="back_button_container">
+
+      <div class="col-sm-3">
+        <!-- Back button -->
+        <img id="back" class="back_button" src="images/back_button.png">
+      </div>
+
+      <div class="col-sm-9">
+          <img class="logo" src="images/logo.png">        
+      </div>
+
+    </div>
+
+    <div class="input_form">
+      <!-- input __from__ -->
+      <select id="from-data" class="make-it-slow style-4 input_one" type="text" name="From" placeholder="From"></select>
+    </div>
+
+    <div class="input_form">
+      <!-- input __to__ -->
+      <select class="make-it-slow style-4 input_two" type="text" name="To" placeholder="To" id="to-data"></select>
+    </div>
+
+    <div class="form_button_container">
+      <!-- calculate button -->
+      <button id="find" class="style-4 input_two make-it-slow calculate"> Calculate Path </button>
+    </div>
+
+    <div class="recommendation_button_container">
+      <div> <img class="bus_icon" src="images/refresh.png"></div>
+      <button id="rec_button" class="rec_button"> Refresh</button>
+    </div>
+
+    <div class="faq_button_container">
+      <!-- FAQ button -->
+      <div> <img class="faq_icon" src="images/faq.png"></div>
+      <button class="rec_button">F.A.Q.</button>
+    </div>
+
+    <div class="social_button_container">
+
+      <div>
+        <img class="social" src="images/social.png">
+      </div>
+      <div class="col-sm-4">
+        <!-- Facebook button -->
+      </div>
+
+      <div class="col-sm-4">
+        <!-- Youtube button -->
+      </div>
+
+      <div class="col-sm-4">
+        <!-- Twitter button -->
+      </div>
+
+    </div>
+
+  </div>
+
+<script type="text/javascript">
+  var button = document.getElementById('back');
+  var button2 = document.getElementById('qham');
+  var button3 = document.getElementById('rec_button');
+
+button.onclick = function() {
+    var div = document.getElementById('UI');
+    var div2 = document.getElementById('qham');
+    var div3 = document.getElementById('UI2');
+    if (div.style.display !== 'none') {
+        div.style.display = 'none';
+        div3.style.display = 'none';
+        div2.style.display = 'block';
+    }
+    else {
+        div.style.display = 'block';
+    }
+};
+
+button2.onclick = function() {
+    var div = document.getElementById('UI');
+    var div2 = document.getElementById('qham');
+    var div3 = document.getElementById('UI2');
+    if (div.style.display == 'none') {
+        div.style.display = 'block';
+        div2.style.display = 'none';
+    }
+    else {
+        div.style.display = 'block';
+    }
+};
+
+function showRecommendation() {
+    var div = document.getElementById('UI2');
+    if (div.style.display == 'none') {
+        div.style.display = 'block';
+    }
+    else if (div.style.display !== 'none'){
+        div.style.display = 'none';
+    }
+    $("#find").html('Show Recommendation');
+    $("#find").addClass("has_rec", "rec");
+};
+  
+button3.onclick = function() {
+    location.reload();
+};  
+
+</script>
+
+<script>
+
+/**
+ * This is where the call starts. All the data is there. Better if I make it to a *json file someday and use sigma's json parser. SOMEDAY!!!!.
+ */
+
+function Node(name, busName)
+{
+  this.name = name;
+  this.busName = busName;
+  this.weight = 1;
+}
+
+function Edge(from, to)
+{
+  this.from = from;
+  this.to = to;
+}
+
+function RelatedNode(weight, start, finish, isStart)
+{
+  this.weight = weight;
+  this.start = start;
+  this.finish = finish;
+  this.isStart = isStart;
+  this.incrementWeight = function(){
+    weight++;
+  };
+
+  this.getWeight = function()
+  {
+    return weight;
+  }
+
+  this.setStart = function(st){
+    start = st;
+  };
+
+  this.setFinish = function(fn)
+  {
+    finish = fn;
+  }
+
+  this.hasStart = function(){
+    return isStart;
+  }
+
+}
+
+let s = null;
+var counter = 0;
+
+$.ajax({
+  url: 'http://localhost:8000/dhaka/info.txt', 
+  success: function(data){
+    let map = new Map();
+    map.clear();
+
+    let wholeString = data;
+    let array = wholeString.split("\n");
+    let graph = {
+      nodes: [],
+      edges: []
+    };
+
+    let node_set = new Set();
+    let edge_number = 0;
+    
+    for(let c = 0; c < array.length; c++)
+    {
+      //data is in a specific format seperated by the symbol minus (-). splitting it
+      let line = array[c];
+      let data_array = line.split(":");
+      let bus_name = data_array[0];
+      let route = data_array[1].split("-");
+      //giving a random color and saving the bus name
+      let label_name = bus_name;
+      let edge_color = 'rgb(' + parseInt((Math.random() * 255)) + "," + parseInt((Math.random() * 255)) + "," + parseInt((Math.random() * 255)) + ')';
+
+      //Make adjacency list for my algorithm
+      for(let i = 1; i < route.length; i++)
+      {
+        let from = route[i - 1].trim();
+        let to = route[i].trim();
+        if(map.get(from) == null)
+        {
+          map.set(from, []);
+        }
+
+        if(map.get(to) == null)
+        {
+          map.set(to, []);
+        }
+
+        map.get(from).push(new Node(to, bus_name));
+        map.get(to).push(new Node(from, bus_name));
+      
+      
+      }
+      
+      // Making the initial Graph
+      for(let i = 0; i < route.length; i++)
+      {
+        let node_name = (route[i]).trim();
+        if(!node_set.has(node_name))
+        {
+          console.log(node_name);
+          graph.nodes.push({
+            id: node_name,
+            label: node_name,
+            x: Math.random() * 70,
+            y: Math.random() * 100,
+            size: 20,
+            color: 'rgb(' + parseInt((Math.random() * 255)) + "," + parseInt((Math.random() * 255)) + ","
+             + parseInt((Math.random() * 255)) + ')'
+          });
+        }
+
+        node_set.add(node_name.trim());
+
+        if(i >= 1)
+        {
+          graph.edges.push({
+            id: edge_number,
+            bus_label: bus_name,
+            source: (route[i - 1]).trim(),
+            target: (route[i]).trim(),
+            size: Math.random(),
+            color: edge_color,
+            type: 'line',
+            count: edge_number,
+            hover_color: '#000'
+          });
+
+          edge_number++; 
+        }   
+      }
+    }
+
+    let node_arr = Array.from(node_set).sort();
+
+    // Making child for Select
+    for(let c = 0; c < node_arr.length; c++)
+    {
+      let item = node_arr[c];
+      $("#from-data").append("<option value='" + item + "'>" + item +  "</option>");
+      $("#to-data").append("<option value='" + item + "'>" + item +  "</option>");
+    }
+    
+    //BFS
+    $("#find").click(function(){
+      let start = $("#from-data").val();
+      let dest = $("#to-data").val();
+      let queue = [];
+      //console.log("from st " + start);
+      queue.push(new Node(start, null));
+      let flag = false;
+      let parent = new Map();
+      let discover = new Map();
+      discover.set(start, true);
+      let level = 1;
+      let destinationNode = null;
+      
+      while(queue.length != 0)
+      {
+        let val = queue.shift();
+        let neighbors = map.get(val.name);        
+        
+        for(let c = 0; neighbors != null && c < neighbors.length; c++)
+        {
+          let neighborNodes = neighbors[c];
+          
+          if(discover.get(neighbors[c].name) == null)
+          {
+            queue.push(neighbors[c]);
+            discover.set(neighbors[c].name, true);
+            parent.set(neighbors[c].name, val);
+          }
+          if(neighborNodes.name == dest)
+          {
+            destinationNode = neighborNodes;
+            flag = true;
+            break;
+          }
+          
+        }
+
+        if(flag)
+        {
+          break;
+        }
+        
+      }
+
+      let uniqueBuses = new Set();
+      let updatedGraph = {
+        nodes: [],
+        edges: []
+      };
+
+      let uNodeArray = [];
+      let uEdgeArray = [];
+      let edge_color = '#003300';
+
+      // Recursive call for finding parents
+      let weightedMap = new Map();
+      goFindParent(destinationNode);
+
+      // Making updated nodes for Graph
+      for(let c = 0; c < uNodeArray.length; c++)
+      {
+          updatedGraph.nodes.push({
+            id: uNodeArray[c].name,
+            label: uNodeArray[c].name,
+            x: Math.random(),
+            y: Math.random(),
+            size: 20,
+            color: 'rgb(' + parseInt((Math.random() * 255)) + "," + parseInt((Math.random() * 255)) + ","
+             + parseInt((Math.random() * 255)) + ')'
+          });
+      }
+
+      // Making updated edges for Graph 
+      for(let c = 0; c < uEdgeArray.length; c++)
+      {
+        updatedGraph.edges.push({
+            id: c + 1,
+            source: (uEdgeArray[c].from.name),
+            target: (uEdgeArray[c].to.name),
+            size: Math.random(),
+            color: edge_color,
+            type: 'line',
+            count: edge_number,
+            hover_color: '#000'
+          });
+      }
+
+      s.graph.clear();
+      s.graph.read({
+        nodes: updatedGraph.nodes, 
+        edges: updatedGraph.edges
+      });
+      s.settings("scalingMode", "inside");
+      s.refresh();
+
+      function goFindParent(node) {
+        level++;
+        if(parent.get(node.name) == null)
+        {
+          uNodeArray.push(new Node(node.name));          
+        }
+        else
+        {
+          //Todo: Need to be fixed
+
+          // let neighbors = map.get(node.name);
+          // let dst = parent.get(node.name);
+
+          // for(let c = 0; c < neighbors.length; c++)
+          // {
+          //   let nn = neighbors[c];
+          //   //console.log(dst);
+          //   if(nn.name == dst.name)
+          //   {
+          //     //console.log(nn);
+          //     console.log(nn.busName);
+          //     if(weightedMap.get(nn.busName) == null)
+          //     {
+
+          //       weightedMap.set(nn.busName, new RelatedNode(0, node.name, nn.name, node.name == destinationNode.name));//RelatedNode(weight, start, finish, isStart)
+          //     }
+          //     else
+          //     {
+          //       //console.log("here at non zero");
+          //       weightedMap.get(nn.busName).incrementWeight();//RelatedNode(weight, start, finish, isStart)
+          //       weightedMap.get(nn.busName).setFinish(nn.name); 
+          //     }
+
+          //   }
+          // } 
+          
+          goFindParent(parent.get(node.name));
+          uniqueBuses.add(node.busName);
+          uNodeArray.push(new Node(node.name));
+          uEdgeArray.push(new Edge(node, parent.get(node.name)));
+        }
+      }
+      
+      if(counter < 2)
+      {
+        for (let item of uniqueBuses){
+          $("#bus_parent").after("<tr><td>" + item + "</td></tr>")
+        }
+        $("#title").html("You need a minimum of " + (level- 1) + " stoppage(s)"); 
+        showRecommendation();
+      }
+      else
+      {
+        $("#find").attr("disabled", "disabled");
+      }
+      counter++;
+    });
+
+    //This is sigma graph object to render all the graphics. don't care much
+    s = new sigma({
+      graph: graph,
+      renderer: {
+        container: document.getElementById('graph-container'),
+        type: 'canvas'
+      },
+      settings: {
+        edgeLabelSize: '20',
+        animationsTime: 5000,
+        scalingMode: "outside"
+      }
+    });
+
+    // Initialize the dragNodes plugin:
+    var dragListener = sigma.plugins.dragNodes(s, s.renderers[0]);
+
+    dragListener.bind('startdrag', function(event) {
+      console.log(event);
+    });
+    dragListener.bind('drag', function(event) {
+      console.log(event);
+    });
+    dragListener.bind('drop', function(event) {
+      console.log(event);
+    });
+    dragListener.bind('dragend', function(event) {
+      console.log(event);
+    });
+  }, 
+  cache: false
+});
+
+</script>
