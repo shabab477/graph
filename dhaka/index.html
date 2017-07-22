@@ -697,6 +697,7 @@ $.ajax({
       
       if(counter < 2)
       {
+        $('#bus_parent').nextAll().remove();
         for (let item of uniqueBuses){
           $("#bus_parent").after("<tr><td>" + item + "</td></tr>")
         }
